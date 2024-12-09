@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add song</title>
+</head>
+<body>
+<main>
+    <form action="/songs/add" method="post">
+        
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title" required>
+
+        <label for="trackId">Track ID</label>
+        <input type="text" id="trackId" name="trackId" required>
+
+        <label for="genre">Genre</label>
+        <input type="text" name="genre" id="genre" required>
+
+        <label for="releaseYear">Release Year</label>
+        <input type="text" id="releaseYear" name="releaseYear" required>
+
+        <label for="albumId">Album ID:</label>
+        <select name="albumId" id="albumId" required>
+            <option value="">Select an album!</option>
+            <th:block th:each="album : ${albums}">
+                <option th:value="${album.id}" th:text="${album.name}"></option>
+            </th:block>
+        </select>
+        <button type="submit">Add Song!</button>
+    </form>
+</main>
+</body>
+</html>

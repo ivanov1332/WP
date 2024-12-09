@@ -1,0 +1,50 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Selected Song</title>
+    <style>
+        body {
+            width: 600px;
+            margin: auto;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        header {
+            margin-bottom: 20px;
+        }
+
+        .song-info {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .song-info p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Selected Song</h1>
+</header>
+<main>
+    <section class="song-info" th:if="${SONG != null}">
+        <h2>Song Details</h2>
+        <p><strong>Title:</strong> <span th:text="${SONG.title != null ? SONG.title : 'Unknown title'}"></span></p>
+        <p><strong>Artist:</strong> <span th:text="${SONG.getPerformers() != null ? SONG.getPerformers() : 'Unknown artist'}"></span></p>
+        <p><strong>Release Year:</strong> <span th:text="${SONG.releaseYear != null ? SONG.releaseYear : 'Unknown year'}"></span></p>
+        <p><strong>Album:</strong>
+            <span th:if="${SONG.album != null}" th:text="${SONG.album.name}"></span>
+            <span th:if="${SONG.album == null}">No album</span>
+        </p>
+    </section>
+
+    <section th:if="${SONG == null}">
+        <p>Sorry, the selected song could not be found.</p>
+    </section>
+</main>
+</body>
+</html>

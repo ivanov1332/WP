@@ -1,0 +1,83 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Songs list</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        form {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>All Songs</h1>
+</header>
+<main>
+    <div th:if="${hasError}">
+        <p style="color: red;" th:text="${error}"></p>
+    </div>
+
+    <form action="/chooseSong" method="post">
+        <table>
+            <thead>
+            <tr>
+                <th>Select</th>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Release Year</th>
+                <th>Album</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="song : ${songs}">
+                <tr>
+                    <td>
+                        <input type="radio" name="selectedSong" th:value="${song.id}">
+                    </td>
+                    <td th:text="${song.title}"></td>
+                    <td th:text="${song.getPerformers()}"></td>
+                    <td th:text="${song.releaseYear}"></td>
+                    <td th:text="${song.album != null ? song.album.name : 'No album'}"></td>
+                    <td>
+                        <a th:href="@{/songs/edit/{id}(id=${song.id})}">Edit</a>
+                        <form th:action="@{/track/assignArtist(trackId=${song.id})}" method="post">
+                            <select name="artistId">
+                                <option th:each="artist : ${artists}" th:value="${artist.id}" th:text="${artist.firstName}"></option>
+                            </select>
+                            <button type="submit">Assign Artist</button>
+                        </form>
+                        <form th:action="@{/songs/delete/{id}(id=${song.id})}" method="post">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+        <button type="submit">Submit</button>
+    </form>
+</main>
+</body>
+</html>
