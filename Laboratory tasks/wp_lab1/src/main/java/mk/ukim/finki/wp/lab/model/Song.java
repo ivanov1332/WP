@@ -1,43 +1,49 @@
 package mk.ukim.finki.wp.lab.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Entity
 public class Song {
-    private static Long idCounter = 0L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    public String trackId;
-    public String title;
-    public String genre;
-    public int releaseYear;
+
+    private String trackId;
+    private String title;
+    private String genre;
+    private int releaseYear;
+
+    @ManyToMany
     private List<Artist> performers;
 
+    @ManyToOne
     private Album album;
 
-    public Song(String title, String trackId, String genre, int releaseYear, Long idAlbum) {
-        this.title = title;
-        this.trackId = trackId;
-        this.genre = genre;
-        this.releaseYear = releaseYear;
-        this.id = idAlbum;
-        this.performers = performers != null ? new ArrayList<>(performers) : new ArrayList<>();
-    }
-
-
-    Song() {
-        this.performers = new ArrayList<>();
-    }
-
     public Song(String trackId, String title, String genre, int releaseYear, List<Artist> performers) {
-        this.id = generateUniqId();
         this.trackId = trackId;
         this.title = title;
         this.genre = genre;
         this.releaseYear = releaseYear;
-        this.performers = performers;
+        this.performers = performers != null ? performers : new ArrayList<>();
+    }
+
+
+    public Song() {
+
+    }
+
+    public Song(String title, String trackId, String genre, int releaseYear, Long albumId) {
+        this.title = title;
+        this.trackId = trackId;
+        this.genre = genre;
+        this.releaseYear = releaseYear;
+//        this.id = albumId;
     }
 
     public void setAlbum(Album album) {
@@ -45,17 +51,6 @@ public class Song {
             return;
         }
         this.album = album;
-    }
-
-    public Song(String trackId, String title, String genre, int releaseYear) {
-        this.trackId = trackId;
-        this.title = title;
-        this.genre = genre;
-        this.releaseYear = releaseYear;
-    }
-
-    private static synchronized Long generateUniqId() {
-        return ++idCounter;
     }
 
     public void setArtist(Artist artist) {

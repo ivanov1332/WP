@@ -123,6 +123,12 @@ public class SongController {
 
         Album album = albumService.findById(albumId);
 
+        if (album == null) {
+            model.addAttribute("hasError", true);
+            model.addAttribute("error", "Album not found");
+            return "editSong";
+        }
+
         song.setTitle(title);
         song.setTrackId(trackId);
         song.setGenre(genre);

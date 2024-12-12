@@ -1,37 +1,13 @@
 package mk.ukim.finki.wp.lab.repository;
-import mk.ukim.finki.wp.lab.bootstrap.DataHolder;
+
 import mk.ukim.finki.wp.lab.model.Artist;
-import mk.ukim.finki.wp.lab.model.Song;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import java.util.List;
-import java.util.Optional;
 
 @Repository
-public class ArtistRepository {
-
-    public List<Artist> findAll() {
-        return DataHolder.artistList;
-    }
-
-    public Optional<Artist> findById(Long id) {
-        return DataHolder.artistList.stream().filter(artist -> artist.getId() == id).findFirst();
-    }
-
-    public Optional<Song> findSongById(Long trackId) {
-        return DataHolder.songList.stream()
-                .filter(song -> song.getId().equals(trackId))
-                .findFirst();
-    }
-
-    public void assignArtistToTrack(Long trackId, Long artistId) {
-        Optional<Song> songOptional = findSongById(trackId);
-        Optional<Artist> artistOptional = findById(artistId);
-
-        if (songOptional.isPresent() && artistOptional.isPresent()) {
-            Song song = songOptional.get();
-            Artist artist = artistOptional.get();
-            song.setArtist(artist);
-        }
-    }
+public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
 }
