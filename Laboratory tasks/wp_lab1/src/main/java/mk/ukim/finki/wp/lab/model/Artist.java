@@ -1,12 +1,16 @@
 package mk.ukim.finki.wp.lab.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Artist {
 
@@ -23,15 +27,16 @@ public class Artist {
     @ManyToMany(mappedBy = "performers")
     private List<Song> songs = new ArrayList<>();
 
-    public Artist() {
-    }
-
 
 
     public Artist(String firstName, String lastName, String bio) {
-//        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;
+    }
+
+    @Override
+    public String toString() {
+        return id + " " + firstName + " " + lastName + " " + bio;
     }
 }

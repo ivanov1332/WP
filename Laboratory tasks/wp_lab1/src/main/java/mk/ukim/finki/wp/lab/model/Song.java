@@ -1,12 +1,16 @@
 package mk.ukim.finki.wp.lab.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Song {
 
@@ -34,16 +38,11 @@ public class Song {
     }
 
 
-    public Song() {
-
-    }
-
     public Song(String title, String trackId, String genre, int releaseYear, Long albumId) {
         this.title = title;
         this.trackId = trackId;
         this.genre = genre;
         this.releaseYear = releaseYear;
-//        this.id = albumId;
     }
 
     public void setAlbum(Album album) {
@@ -58,5 +57,10 @@ public class Song {
             this.performers = new ArrayList<>(this.performers);
         }
         this.performers.add(artist);
+    }
+
+    @Override
+    public String toString() {
+        return id + " " + trackId + " " + title + " " + genre + " " + releaseYear;
     }
 }

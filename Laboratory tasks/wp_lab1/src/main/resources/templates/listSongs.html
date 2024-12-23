@@ -1,5 +1,5 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>Songs list</title>
@@ -54,22 +54,23 @@
             <th:block th:each="song : ${songs}">
                 <tr>
                     <td>
-                        <input type="radio" name="selectedSong" th:value="${song.id}">
+                        <input type="radio" name="selectedSong" th:value="${song.id}" required>
                     </td>
                     <td th:text="${song.title}"></td>
                     <td th:text="${song.getPerformers()}"></td>
                     <td th:text="${song.releaseYear}"></td>
                     <td th:text="${song.album != null ? song.album.name : 'No album'}"></td>
                     <td>
-                        <a th:href="@{/songs/edit/{id}(id=${song.id})}">Edit</a>
-                        <form th:action="@{/track/assignArtist(trackId=${song.id})}" method="post">
+                        <a sec:authorize="hasRole('ADMIN')" th:href="@{/songs/edit/{id}(id=${song.id})}">Edit</a>
+                        <a sec:authorize="hasRole('ADMIN')" th:href="@{/songs/add}">Add</a>
+                        <form th:action="@{/track/assignArtist(trackId=${song.id})}" sec:authorize="hasRole('ADMIN')" method="post">
                             <select name="artistId">
                                 <option th:each="artist : ${artists}" th:value="${artist.id}" th:text="${artist.firstName}"></option>
                             </select>
                             <button type="submit">Assign Artist</button>
                         </form>
                         <form th:action="@{/songs/delete/{id}(id=${song.id})}" method="post">
-                            <button type="submit">Delete</button>
+                            <button sec:authorize="hasRole('ADMIN')" type="submit">Delete</button>
                         </form>
                     </td>
                 </tr>

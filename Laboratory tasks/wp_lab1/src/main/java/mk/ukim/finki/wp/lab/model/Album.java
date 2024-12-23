@@ -2,6 +2,7 @@ package mk.ukim.finki.wp.lab.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +25,6 @@ public class Album {
 
     public Album() {
     }
-
-//    public Album(String name, Long id, String genre, String releaseYear) {
-//        this.name = name;
-//        this.id = id;
-//        this.genre = genre;
-//        this.releaseYear = releaseYear;
-//    }
 
     public Album(String name, String genre, String releaseYear) {
         this.name = name;

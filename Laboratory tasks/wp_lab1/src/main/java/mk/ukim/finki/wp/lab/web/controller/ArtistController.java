@@ -33,6 +33,7 @@ public class ArtistController {
 
     @PostMapping("track/assignArtist")
     public String assignArtist(@RequestParam(required = false) Long trackId,@RequestParam Long artistId,Model model){
+
         artistService.assignArtistToTrack(trackId, artistId);
         return "redirect:/songs/" + trackId;
     }

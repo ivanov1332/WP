@@ -7,14 +7,12 @@ import mk.ukim.finki.wp.lab.model.Song;
 import mk.ukim.finki.wp.lab.repository.AlbumRepository;
 import mk.ukim.finki.wp.lab.repository.ArtistRepository;
 import mk.ukim.finki.wp.lab.repository.SongRepository;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Profile("h2")
 public class DataHolder {
     public static final List<Artist> artistList = new ArrayList<>();
     public static final List<Song> songList = new ArrayList<>();
@@ -32,17 +30,31 @@ public class DataHolder {
 
     @PostConstruct
     public void init() {
+
         for (int i = 0; i < 5; i++) {
-            artistList.add(new Artist("FirstName" + i + 1, "LastName" + i + 1, "Bio" + i + 1));
-            songList.add(new Song("track" + i + 1, "title" + i, "genre" + i + 1, 2000 + i + 1, List.of(artistList.get(i))));
-            albums.add(new Album("name" + i + 1, "genre" + i + 1, "201" + i + 1));
+            Artist artist = new Artist("FirstName" + (i + 1), "LastName" + (i + 1), "Bio" + (i + 1));
+            artistList.add(artist);
+        }
+        artistRepository.saveAll(artistList);
 
-            songList.get(i).setAlbum(albums.get(i));
+        for (int i = 0; i < 5; i++) {
+            Album album = new Album("name" + (i + 1), "genre" + (i + 1), "201" + (i + 1));
+            albums.add(album);
+        }
+        albumRepository.saveAll(albums);
 
+        for (int i = 0; i < 5; i++) {
+            Song song = new Song(
+                    "track" + (i + 1),
+                    "title" + i,
+                    "genre" + (i + 1),
+                    2000 + (i + 1),
+                    List.of(artistList.get(i))
+            );
+            song.setAlbum(albums.get(i));
+            songList.add(song);
         }
         songRepository.saveAll(songList);
-        albumRepository.saveAll(albums);
-        artistRepository.saveAll(artistList);
     }
 }
 
